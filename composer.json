@@ -1,0 +1,28 @@
+{
+    "name": "picqer/xero-php-api",
+    "type": "library",
+    "description": "A PHP script to convert Knab CSV files to Xero files",
+    "keywords": [
+        "knab",
+        "xero",
+        "csv converter"
+    ],
+    "homepage": "http://github.com/picqer/xero-php-api",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Casper Bakker",
+            "email": "info@picqer.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "~5.2.0",
+        "guzzlehttp/oauth-subscriber": "~0.2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Picqer\\Xero\\": "src/"
+        }
+    }
+}

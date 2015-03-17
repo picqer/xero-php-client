@@ -1,0 +1,4 @@
+.idea
+vendor
+privatekey.pem
+publickey.cer
