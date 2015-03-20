@@ -8,10 +8,6 @@ use DateTime;
 
 abstract class BaseEntity {
 
-    protected $endpoint;
-    protected $primaryKey;
-    protected $childEntities = [];
-
     /**
      * Set property on entity
      * @param mixed $propertyName
@@ -92,6 +88,10 @@ abstract class BaseEntity {
                     $childCollection[] = self::makeFromResponse($childEntityName, $childProperty);
                 }
                 $entity->$propertyKey = $childCollection;
+            } elseif ($entity->isForeignEntity($propertyKey))
+            {
+                $foreignEntityName = $entity->getForeignEntityName($propertyKey);
+                $entity->$propertyKey = self::makeFromResponse($foreignEntityName, $propertyValue);
             } elseif (property_exists($entity, $propertyKey))
             {
                 if (is_string($propertyValue) && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/', $propertyValue))
@@ -107,16 +107,12 @@ abstract class BaseEntity {
         return $entity;
     }
 
-    public function getPrimaryKey()
+    public function getPrimaryKeyValue()
     {
-        return $this->$this->primaryKey;
+        return $this->$this->getPrimaryKey();
     }
 
-    public function getChildEntities()
-    {
-        return $this->childEntities;
-    }
-
+    // Child entities functions
     public function isChildEntity($key)
     {
         return array_key_exists($key, $this->getChildEntities());
@@ -128,4 +124,39 @@ abstract class BaseEntity {
         $entityname = $entities[$key];
         return $entityname;
     }
+
+    // Foreign entity functions
+    public function isForeignEntity($key)
+    {
+        return array_key_exists($key, $this->getForeignEntities());
+    }
+
+    public function getForeignEntityName($key)
+    {
+        $entities = $this->getForeignEntities();
+        $entityname = $entities[$key];
+        return $entityname;
+    }
+
+    // Default values
+    protected function getChildEntities()
+    {
+        return [];
+    }
+
+    protected function getForeignEntities()
+    {
+        return [];
+    }
+
+    public function getPrimaryKey()
+    {
+        return null;
+    }
+
+    public function getEndpoint()
+    {
+        return null;
+    }
+
 }

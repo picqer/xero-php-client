@@ -4,9 +4,6 @@ namespace Picqer\Xero\Entities;
 
 class Invoice extends BaseEntity {
 
-    protected $endpoint = '/invoices';
-    protected $primaryKey = 'InvoiceID';
-
     protected $InvoiceID;
     protected $Type;
     protected $InvoiceNumber;
@@ -23,8 +20,30 @@ class Invoice extends BaseEntity {
 
     protected $LineItems = [];
 
-    protected $childEntities = [
-        'LineItems' => 'InvoiceLineItem',
-    ];
+    protected $Contact = [];
+
+    protected function getChildEntities()
+    {
+        return [
+            'LineItems' => 'InvoiceLineItem',
+        ];
+    }
+
+    protected function getForeignEntities()
+    {
+        return [
+            'Contact' => 'Contact'
+        ];
+    }
+
+    public function getPrimaryKey()
+    {
+        return 'InvoiceID';
+    }
+
+    public function getEndpoint()
+    {
+        return '/invoices';
+    }
 
 }

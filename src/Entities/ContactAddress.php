@@ -4,9 +4,6 @@ namespace Picqer\Xero\Entities;
 
 class ContactAddress extends BaseEntity {
 
-    protected $endpoint = '/contacts';
-    protected $primaryKey = 'ContactId';
-
     protected $AddressType;
     protected $City;
     protected $Region;

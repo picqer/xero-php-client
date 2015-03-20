@@ -4,9 +4,6 @@ namespace Picqer\Xero\Entities;
 
 class Contact extends BaseEntity {
 
-    protected $endpoint = '/contacts';
-    protected $primaryKey = 'ContactId';
-
     protected $ContactID;
     protected $ContactStatus;
     protected $Name;
@@ -20,8 +17,28 @@ class Contact extends BaseEntity {
     protected $Addresses = [];
     protected $Phones = [];
 
-    protected $childEntities = [
-        'Addresses' => 'ContactAddress',
-        'Phones' => 'ContactPhone'
-    ];
+    protected function getChildEntities()
+    {
+        return [
+            'Addresses' => 'ContactAddress',
+            'Phones' => 'ContactPhone'
+        ];
+    }
+
+    protected function getForeignEntities()
+    {
+        return [
+        ];
+    }
+
+    public function getPrimaryKey()
+    {
+        return 'ContactID';
+    }
+
+    public function getEndpoint()
+    {
+        return '/contacts';
+    }
+
 }
