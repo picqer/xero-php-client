@@ -4,6 +4,7 @@ namespace Picqer\Xero;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
+use GuzzleHttp\Stream\Stream;
 
 class Xero
 {
@@ -49,6 +50,16 @@ class Xero
         return Entities\BaseEntity::makeCollectionFromResponse('Invoice', $response['Invoices']);
     }
 
+    public function create(Entities\BaseEntity $entity)
+    {
+        $xmlBuilder = new XmlBuilder();
+        $xml = $xmlBuilder->build($entity);
+
+        $response = $this->requestPut($entity->getEndpoint(), $xml);
+
+        return $response;
+    }
+
     private function prepareClient()
     {
         $client = new Client();
@@ -65,10 +76,16 @@ class Xero
         $this->client = $client;
     }
 
-    private function request($method, $endpoint)
+    private function request($method, $endpoint, $data = null)
     {
         $request = $this->client->createRequest($method, $this->endpoint . $endpoint, ['auth' => 'oauth']);
         $request->addHeader('Accept', 'application/json');
+
+        if (! is_null($data))
+        {
+            $request->setBody(Stream::factory($data));
+        }
+
         $response = $this->client->send($request);
 
         return $response;
@@ -77,6 +94,15 @@ class Xero
     private function requestGet($endpoint)
     {
         $response = $this->request('GET', $endpoint);
+
+        $json = $response->json();
+
+        return $json;
+    }
+
+    private function requestPut($endpoint, $xml)
+    {
+        $response = $this->request('PUT', $endpoint, $xml);
 
         $json = $response->json();
 

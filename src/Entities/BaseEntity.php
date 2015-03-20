@@ -159,4 +159,9 @@ abstract class BaseEntity {
         return null;
     }
 
+
+    public function getAttributeKeys()
+    {
+        return array_keys(get_object_vars($this));
+    }
 }

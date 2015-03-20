@@ -41,4 +41,10 @@ class Contact extends BaseEntity {
         return '/contacts';
     }
 
+    public function getXmlName()
+    {
+        return 'Contact';
+    }
+
+
 }

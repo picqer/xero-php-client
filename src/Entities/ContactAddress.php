@@ -14,4 +14,14 @@ class ContactAddress extends BaseEntity {
     protected $AddressLine2;
     protected $AddressLine3;
     protected $AddressLine4;
+
+    public function getXmlCollectionName()
+    {
+        return 'Addresses';
+    }
+
+    public function getXmlName()
+    {
+        return 'Address';
+    }
 }
