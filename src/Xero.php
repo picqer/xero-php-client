@@ -28,6 +28,27 @@ class Xero
         return Entities\BaseEntity::makeFromResponse('Contact', $response['Contacts'][0]);
     }
 
+    public function getContacts()
+    {
+        $response = $this->requestGet('/contacts');
+
+        return Entities\BaseEntity::makeCollectionFromResponse('Contact', $response['Contacts']);
+    }
+
+    public function getInvoice($invoiceId)
+    {
+        $response = $this->requestGet('/invoices/' . $invoiceId);
+
+        return Entities\BaseEntity::makeFromResponse('Invoice', $response['Invoices'][0]);
+    }
+
+    public function getInvoices()
+    {
+        $response = $this->requestGet('/invoices');
+
+        return Entities\BaseEntity::makeCollectionFromResponse('Invoice', $response['Invoices']);
+    }
+
     private function prepareClient()
     {
         $client = new Client();
