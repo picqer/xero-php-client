@@ -109,7 +109,8 @@ abstract class BaseEntity {
 
     public function getPrimaryKeyValue()
     {
-        return $this->$this->getPrimaryKey();
+        $pk = $this->getPrimaryKey();
+        return $this->$pk;
     }
 
     // Child entities functions

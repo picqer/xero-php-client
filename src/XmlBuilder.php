@@ -29,9 +29,15 @@ class XmlBuilder {
             {
                 // Add subtree with childs for child entities
                 $this->addCollectionChilds($attributeKey, $xmlentitychild, $entity->$attributeKey);
-            } elseif (is_string($entity->$attributeKey))
+            } else
             {
                 // Add xml child with attribute
+                if ($entity->$attributeKey === true)
+                    $entity->$attributeKey = 'true';
+
+                if ($entity->$attributeKey === false)
+                    $entity->$attributeKey = 'false';
+
                 $xmlentitychild->addChild($attributeKey, $entity->$attributeKey);
             }
         }

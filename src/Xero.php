@@ -60,6 +60,16 @@ class Xero
         return $response;
     }
 
+    public function update(Entities\BaseEntity $entity)
+    {
+        $xmlBuilder = new XmlBuilder();
+        $xml = $xmlBuilder->build($entity);
+
+        $response = $this->requestPost($entity->getEndpoint() . '/' . $entity->getPrimaryKeyValue(), $xml);
+
+        return $response;
+    }
+
     private function prepareClient()
     {
         $client = new Client();
@@ -78,7 +88,14 @@ class Xero
 
     private function request($method, $endpoint, $data = null)
     {
-        $request = $this->client->createRequest($method, $this->endpoint . $endpoint, ['auth' => 'oauth']);
+        $request = $this->client->createRequest(
+            $method,
+            $this->endpoint . $endpoint,
+            [
+                'auth' => 'oauth',  // Use oauth plugin
+                'verify' => __DIR__.'/../ca-bundle.crt' // Needed for Xero's old certificates
+            ]
+        );
         $request->addHeader('Accept', 'application/json');
 
         if (! is_null($data))
@@ -94,6 +111,15 @@ class Xero
     private function requestGet($endpoint)
     {
         $response = $this->request('GET', $endpoint);
+
+        $json = $response->json();
+
+        return $json;
+    }
+
+    private function requestPost($endpoint, $xml)
+    {
+        $response = $this->request('POST', $endpoint, $xml);
 
         $json = $response->json();
 

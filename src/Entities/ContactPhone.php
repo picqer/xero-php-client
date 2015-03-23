@@ -8,4 +8,14 @@ class ContactPhone extends BaseEntity {
     protected $PhoneNumber;
     protected $PhoneAreaCode;
     protected $PhoneCountryCode;
+
+    public function getXmlCollectionName()
+    {
+        return 'Phones';
+    }
+
+    public function getXmlName()
+    {
+        return 'Phone';
+    }
 }
