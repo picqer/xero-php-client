@@ -6,18 +6,24 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use GuzzleHttp\Stream\Stream;
 
-class Xero
-{
+class Xero {
     private $endpoint = 'https://api.xero.com/api.xro/2.0';
     private $key;
     private $secret;
     private $privatekey = '../privatekey.pem';
+
+    /**
+     * @var Client
+     */
     private $client;
 
-    public function __construct($key, $secret)
+    public function __construct($key, $secret, $privateKeyPath = null)
     {
         $this->key = $key;
         $this->secret = $secret;
+
+        if ( ! is_null($privateKeyPath))
+            $this->privatekey = $privateKeyPath;
 
         $this->prepareClient();
     }
@@ -74,11 +80,11 @@ class Xero
     {
         $client = new Client();
         $oauth = new Oauth1([
-            'consumer_key'       => $this->key,
-            'token'              => $this->key,
-            'token_secret'       => $this->secret,
-            'signature_method'   => Oauth1::SIGNATURE_METHOD_RSA,
-            'consumer_secret'    => $this->getPrivateKeyPath()
+            'consumer_key'     => $this->key,
+            'token'            => $this->key,
+            'token_secret'     => $this->secret,
+            'signature_method' => Oauth1::SIGNATURE_METHOD_RSA,
+            'consumer_secret'  => $this->getPrivateKeyPath()
         ]);
 
         $client->getEmitter()->attach($oauth);
@@ -92,17 +98,16 @@ class Xero
             $method,
             $this->endpoint . $endpoint,
             [
-                'auth' => 'oauth',  // Use oauth plugin
-                'verify' => __DIR__.'/../ca-bundle.crt' // Needed for Xero's old certificates
+                'auth'   => 'oauth',  // Use oauth plugin
+                'verify' => __DIR__ . '/../ca-bundle.crt' // Needed for Xero's old certificates
             ]
         );
         $request->addHeader('Accept', 'application/json');
 
-        if (! is_null($data))
+        if ( ! is_null($data))
         {
             $request->setBody(Stream::factory($data));
         }
-
         $response = $this->client->send($request);
 
         return $response;
@@ -137,6 +142,9 @@ class Xero
 
     private function getPrivateKeyPath()
     {
-        return __DIR__ . '/' . $this->privatekey;
+        if (substr($this->privatekey, 0, 1) != '/')
+            return __DIR__ . '/' . $this->privatekey;
+
+        return $this->privatekey;
     }
 }

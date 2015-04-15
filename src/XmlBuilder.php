@@ -3,12 +3,13 @@
 namespace Picqer\Xero;
 
 use SimpleXMLElement;
+use DateTime;
 
 class XmlBuilder {
 
     public function build(Entities\BaseEntity $entity)
     {
-        $xml = new SimpleXMLElement('<'.$entity->getXmlName().'s/>');
+        $xml = new SimpleXMLElement('<' . $entity->getXmlName() . 's/>');
 
         $this->addChild($xml, $entity);
 
@@ -38,7 +39,11 @@ class XmlBuilder {
                 if ($entity->$attributeKey === false)
                     $entity->$attributeKey = 'false';
 
-                $xmlentitychild->addChild($attributeKey, $entity->$attributeKey);
+                if ($entity->$attributeKey instanceof DateTime)
+                    $entity->$attributeKey = $entity->$attributeKey->format(DateTime::ISO8601);
+
+                if ( ! is_null($entity->$attributeKey)) // Do not include empty attributes
+                    $xmlentitychild->addChild($attributeKey, htmlspecialchars($entity->$attributeKey));
             }
         }
     }

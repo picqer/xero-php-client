@@ -21,7 +21,7 @@ class Contact extends BaseEntity {
     {
         return [
             'Addresses' => 'ContactAddress',
-            'Phones' => 'ContactPhone'
+            'Phones'    => 'ContactPhone'
         ];
     }
 

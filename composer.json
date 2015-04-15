@@ -1,11 +1,9 @@
 {
     "name": "picqer/xero-php-api",
     "type": "library",
-    "description": "A PHP script to convert Knab CSV files to Xero files",
+    "description": "PHP Client library for the Xero oAuth API, only for private applications",
     "keywords": [
-        "knab",
-        "xero",
-        "csv converter"
+        "xero"
     ],
     "homepage": "http://github.com/picqer/xero-php-api",
     "license": "MIT",

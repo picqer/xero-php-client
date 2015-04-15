@@ -12,11 +12,14 @@ class Invoice extends BaseEntity {
     protected $AmountCredited;
     protected $DateString;
     protected $DueDateString;
+    protected $Date;
+    protected $DueDate;
     protected $Status;
     protected $SubTotal;
     protected $TotalTax;
     protected $Total;
     protected $CurrencyCode;
+    protected $LineAmountTypes;
 
     protected $LineItems = [];
 
@@ -46,4 +49,13 @@ class Invoice extends BaseEntity {
         return '/invoices';
     }
 
+    public function getXmlName()
+    {
+        return 'Invoice';
+    }
+
+    public function addLineItem($lineitem)
+    {
+        $this->LineItems[] = $lineitem;
+    }
 }
