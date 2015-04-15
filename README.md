@@ -15,7 +15,7 @@ Create a private key and certificate, and upload your certificate.
 
 Start a Xero client:
 
-    $xero = new Picqer\Xero\Xero('--api key--', '--api secret--', '--path to private key file--);
+    $xero = new Picqer\Xero\Xero('--api key--', '--api secret--', '--path to private key file--');
 
 Provide your API key, API secret and the path to your private key file.
 
