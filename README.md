@@ -1,11 +1,11 @@
-# picqer-xero-php
+# xero-php-client
 PHP Client library for the Xero oAuth API, only for private applications
 
 ## Composer install
 Installing this Xero API client for PHP can be done through Composer.
 
     "require": {
-      "picqer/xero-php-api": "~0.1.0"
+      "picqer/xero-php-client": "~0.1.0"
     }
 
 ## Usage
