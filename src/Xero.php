@@ -56,6 +56,15 @@ class Xero {
         return Entities\BaseEntity::makeCollectionFromResponse('Invoice', $response['Invoices']);
     }
 
+    public function getInvoicePdf($invoiceId)
+    {
+        $endpoint = '/invoices/' . $invoiceId;
+
+        $response = $this->request('GET', $endpoint, null, 'application/pdf');
+
+        return $response->getBody()->getContents();
+    }
+
     public function create(Entities\BaseEntity $entity)
     {
         $xmlBuilder = new XmlBuilder();
@@ -92,7 +101,7 @@ class Xero {
         $this->client = $client;
     }
 
-    private function request($method, $endpoint, $data = null)
+    private function request($method, $endpoint, $data = null, $accept = 'application/json')
     {
         $request = $this->client->createRequest(
             $method,
@@ -102,7 +111,7 @@ class Xero {
                 'verify' => __DIR__ . '/../ca-bundle.crt' // Needed for Xero's old certificates
             ]
         );
-        $request->addHeader('Accept', 'application/json');
+        $request->addHeader('Accept', $accept);
 
         if ( ! is_null($data))
         {
