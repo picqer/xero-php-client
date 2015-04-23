@@ -5,6 +5,8 @@ namespace Picqer\Xero\Entities;
 class Contact extends BaseEntity {
 
     protected $ContactID;
+    protected $ContactNumber;
+    protected $AccountNumber;
     protected $ContactStatus;
     protected $Name;
     protected $FirstName;
@@ -12,7 +14,10 @@ class Contact extends BaseEntity {
     protected $EmailAddress;
     protected $IsSupplier;
     protected $IsCustomer;
+    protected $BankAccountDetails;
+    protected $Website;
     protected $DefaultCurrency;
+    protected $TaxNumber;
 
     protected $Addresses = [];
     protected $Phones = [];
