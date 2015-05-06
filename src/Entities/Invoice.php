@@ -15,11 +15,17 @@ class Invoice extends BaseEntity {
     protected $Date;
     protected $DueDate;
     protected $Status;
+    protected $SentToContact;
+    protected $ExpectedPaymentDate;
+    protected $PlannedPaymentDate;
     protected $SubTotal;
     protected $TotalTax;
     protected $Total;
+    protected $TotalDiscount;
     protected $CurrencyCode;
     protected $LineAmountTypes;
+    protected $AmountPaid;
+    protected $FullyPaidOnDate;
 
     protected $LineItems = [];
 
