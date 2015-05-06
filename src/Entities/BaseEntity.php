@@ -160,6 +160,10 @@ abstract class BaseEntity {
         return null;
     }
 
+    public function getIgnoredPutPostValues()
+    {
+        return [];
+    }
 
     public function getAttributeKeys()
     {

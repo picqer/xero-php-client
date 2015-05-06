@@ -42,7 +42,7 @@ class XmlBuilder {
                 if ($entity->$attributeKey instanceof DateTime)
                     $entity->$attributeKey = $entity->$attributeKey->format(DateTime::ISO8601);
 
-                if ( ! is_null($entity->$attributeKey)) // Do not include empty attributes
+                if ( ! is_null($entity->$attributeKey) && ! in_array($attributeKey, $entity->getIgnoredPutPostValues())) // Do not include empty attributes
                     $xmlentitychild->addChild($attributeKey, htmlspecialchars($entity->$attributeKey));
             }
         }
