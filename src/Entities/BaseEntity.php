@@ -96,10 +96,16 @@ abstract class BaseEntity {
             {
                 if (is_string($propertyValue) && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/', $propertyValue))
                 {
+                    // The real dates are appended by 'String', correct for this
+                    if (substr($propertyKey, -6) == 'String')
+                        $propertyKey = substr($propertyKey, 0, -6);
+
                     $entity->$propertyKey = new DateTime($propertyValue);
                 } else
                 {
-                    $entity->$propertyKey = $propertyValue;
+                    // Ignore ugly Xero dates
+                    if (substr($propertyValue, 0, 6) != '/Date(')
+                        $entity->$propertyKey = $propertyValue;
                 }
             }
         }

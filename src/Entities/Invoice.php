@@ -10,8 +10,6 @@ class Invoice extends BaseEntity {
     protected $Reference;
     protected $AmountDue;
     protected $AmountCredited;
-    protected $DateString;
-    protected $DueDateString;
     protected $Date;
     protected $DueDate;
     protected $Status;
@@ -59,17 +57,7 @@ class Invoice extends BaseEntity {
     {
         return 'Invoice';
     }
-
-    public function getIgnoredPutPostValues()
-    {
-        return [
-            'DateString',
-            'DueDateString',
-            'Date',
-            'DueDate'
-        ];
-    }
-
+    
     public function addLineItem($lineitem)
     {
         $this->LineItems[] = $lineitem;
