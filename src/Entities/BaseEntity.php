@@ -92,20 +92,18 @@ abstract class BaseEntity {
             {
                 $foreignEntityName = $entity->getForeignEntityName($propertyKey);
                 $entity->$propertyKey = self::makeFromResponse($foreignEntityName, $propertyValue);
-            } elseif (property_exists($entity, $propertyKey))
+            } elseif (property_exists($entity, $propertyKey) && substr($propertyValue, 0, 6) != '/Date(')
             {
-                if (is_string($propertyValue) && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/', $propertyValue))
+                $entity->$propertyKey = $propertyValue;
+            } elseif (substr($propertyKey, -6) == 'String')
+            {
+                $propertyKey = substr($propertyKey, 0, -6);
+                if (property_exists($entity, $propertyKey))
                 {
-                    // The real dates are appended by 'String', correct for this
-                    if (substr($propertyKey, -6) == 'String')
-                        $propertyKey = substr($propertyKey, 0, -6);
-
-                    $entity->$propertyKey = new DateTime($propertyValue);
-                } else
-                {
-                    // Ignore ugly Xero dates
-                    if (substr($propertyValue, 0, 6) != '/Date(')
-                        $entity->$propertyKey = $propertyValue;
+                    if (is_string($propertyValue) && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/', $propertyValue))
+                    {
+                        $entity->$propertyKey = new DateTime($propertyValue);
+                    }
                 }
             }
         }
