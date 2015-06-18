@@ -3,8 +3,10 @@
 namespace Picqer\Xero;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
-use GuzzleHttp\Stream\Stream;
+use GuzzleHttp\Psr7\Response;
 
 class Xero {
     private $endpoint = 'https://api.xero.com/api.xro/2.0';
@@ -60,7 +62,7 @@ class Xero {
     {
         $endpoint = '/invoices/' . $invoiceId;
 
-        $response = $this->request('GET', $endpoint, null, 'application/pdf');
+        $response = $this->request('get', $endpoint, null, 'application/pdf');
 
         return $response->getBody()->getContents();
     }
@@ -87,64 +89,74 @@ class Xero {
 
     private function prepareClient()
     {
-        $client = new Client();
+        $stack = HandlerStack::create();
+
         $oauth = new Oauth1([
             'consumer_key'     => $this->key,
             'token'            => $this->key,
             'token_secret'     => $this->secret,
             'signature_method' => Oauth1::SIGNATURE_METHOD_RSA,
-            'consumer_secret'  => $this->getPrivateKeyPath()
+            'private_key_file'  => $this->getPrivateKeyPath(),
+            'private_key_passphrase' => ''
         ]);
+        $stack->push($oauth);
 
-        $client->getEmitter()->attach($oauth);
+        $this->container = [];
+        $history = Middleware::history($this->container);
+        $stack->push($history);
+
+        $client = new Client([
+            'handler' => $stack
+        ]);
 
         $this->client = $client;
     }
 
     private function request($method, $endpoint, $data = null, $accept = 'application/json')
     {
-        $request = $this->client->createRequest(
-            $method,
-            $this->endpoint . $endpoint,
-            [
-                'auth'   => 'oauth',  // Use oauth plugin
-                'verify' => __DIR__ . '/../ca-bundle.crt' // Needed for Xero's old certificates
-            ]
-        );
-        $request->addHeader('Accept', $accept);
+        $options = [
+            'auth'   => 'oauth',  // Use oauth plugin
+            'verify' => __DIR__ . '/../ca-bundle.crt', // Needed for Xero's old certificates
+            'headers' => ['Accept' => $accept]
+        ];
 
         if ( ! is_null($data))
         {
-            $request->setBody(Stream::factory($data));
+            $options['body'] = $data;
         }
-        $response = $this->client->send($request);
 
+        try {
+            $response = $this->client->$method($this->endpoint . $endpoint, $options);
+        } catch (\Exception $e) {
+            print_r($this->container[count($this->container)-1]['response']->getBody()->getContents());die();
+        }
         return $response;
     }
 
     private function requestGet($endpoint)
     {
-        $response = $this->request('GET', $endpoint);
+        /* @var Response $response */
+        $response = $this->request('get', $endpoint);
 
-        $json = $response->json();
+        $json = $this->getArrayFromJsonBody($response);
 
         return $json;
     }
 
     private function requestPost($endpoint, $xml)
     {
-        $response = $this->request('POST', $endpoint, $xml);
+        $response = $this->request('post', $endpoint, $xml);
 
-        $json = $response->json();
+        $json = $this->getArrayFromJsonBody($response);
 
         return $json;
     }
 
     private function requestPut($endpoint, $xml)
     {
-        $response = $this->request('PUT', $endpoint, $xml);
+        $response = $this->request('put', $endpoint, $xml);
 
-        $json = $response->json();
+        $json = $this->getArrayFromJsonBody($response);
 
         return $json;
     }
@@ -155,5 +167,14 @@ class Xero {
             return __DIR__ . '/' . $this->privatekey;
 
         return $this->privatekey;
+    }
+
+    /**
+     * @param Response $response
+     * @return array
+     */
+    private function getArrayFromJsonBody($response)
+    {
+        return json_decode($response->getBody()->getContents(), true);
     }
 }

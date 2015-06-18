@@ -14,9 +14,15 @@
             "email": "info@picqer.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:cbakker/oauth-subscriber.git"
+        }
+    ],
     "require": {
-        "guzzlehttp/guzzle": "~5.2.0",
-        "guzzlehttp/oauth-subscriber": "~0.2.0"
+        "guzzlehttp/guzzle": "~6.0",
+        "guzzlehttp/oauth-subscriber": "dev-master"
     },
     "autoload": {
         "psr-4": {
