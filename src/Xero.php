@@ -7,6 +7,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use GuzzleHttp\Psr7\Response;
+use Picqer\Xero\Exceptions\XeroApiException;
 
 class Xero {
     private $endpoint = 'https://api.xero.com/api.xro/2.0';
@@ -128,7 +129,7 @@ class Xero {
         try {
             $response = $this->client->$method($this->endpoint . $endpoint, $options);
         } catch (\Exception $e) {
-            print_r($this->container[count($this->container)-1]['response']->getBody()->getContents());die();
+            throw new XeroApiException($this->container[count($this->container)-1]['response']->getBody()->getContents());
         }
         return $response;
     }
