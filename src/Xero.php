@@ -8,6 +8,7 @@ use GuzzleHttp\Middleware;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use GuzzleHttp\Psr7\Response;
 use Picqer\Xero\Exceptions\XeroApiException;
+use Picqer\Xero\Exceptions\XeroRatelimitExceededException;
 
 class Xero {
     private $endpoint = 'https://api.xero.com/api.xro/2.0';
@@ -129,7 +130,11 @@ class Xero {
         try {
             $response = $this->client->$method($this->endpoint . $endpoint, $options);
         } catch (\Exception $e) {
-            throw new XeroApiException($this->container[count($this->container)-1]['response']->getBody()->getContents());
+            if ($e->getCode() === 503) {
+                throw new XeroRatelimitExceededException;
+            }
+
+            throw new XeroApiException($this->container[count($this->container)-1]['response']->getBody()->getContents(), 0, $e);
         }
         return $response;
     }
