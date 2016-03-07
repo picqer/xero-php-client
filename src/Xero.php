@@ -112,7 +112,7 @@ class Xero {
         $this->client = $client;
     }
 
-    private function request($method, $endpoint, $data = null, $accept = 'application/json')
+    public function request($method, $endpoint, $data = null, $accept = 'application/json')
     {
         $options = [
             'auth'   => 'oauth',  // Use oauth plugin
