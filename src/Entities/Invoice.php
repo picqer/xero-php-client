@@ -24,6 +24,7 @@ class Invoice extends BaseEntity {
     protected $LineAmountTypes;
     protected $AmountPaid;
     protected $FullyPaidOnDate;
+    protected $BrandingThemeID;
 
     protected $LineItems = [];
 
