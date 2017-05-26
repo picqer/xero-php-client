@@ -122,6 +122,14 @@ class Xero {
             'headers' => ['Accept' => $accept]
         ];
 
+        if (is_array($data) && isset($data['query'])) {
+            $options['query'] = $data['query'];
+            unset($data['query']);
+            if (count($data) == 0) {
+                $data = null;
+            }
+        }
+
         if ( ! is_null($data))
         {
             $options['body'] = $data;
