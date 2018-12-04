@@ -1,7 +1,6 @@
 <?php
-
 namespace Picqer\Xero\Entities;
-class Payment extends BaseEntity {
+class SinglePayment extends BaseEntity {
     protected $Invoice;
     protected $Account;
     protected $CreditNoteID;
@@ -27,10 +26,4 @@ class Payment extends BaseEntity {
     {
         return '/payments';
     }
-    protected function getChildEntities()
-    {
-        return [
-            'Invoice' => 'PaymentInvoice',
-            'CreditNote' => 'CreditNote'
-        ];
-    }
+}
