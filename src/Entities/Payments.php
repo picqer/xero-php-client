@@ -1,6 +1,6 @@
 <?php
 namespace Picqer\Xero\Entities;
-class Payment extends BaseEntity {
+class Payments extends BaseEntity {
     protected $Payment = [];
     public function getPrimaryKey()
     {
