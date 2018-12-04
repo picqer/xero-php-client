@@ -7,6 +7,7 @@ class Account extends BaseEntity {
     protected $Type;
     protected $TaxType;
     protected $Class;
+    protected $Code;
     protected $EnablePaymentsToAccount;
     protected $ShowInExpenseClaims;
     protected $BankAccountNumber;
