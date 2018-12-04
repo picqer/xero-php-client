@@ -18,6 +18,7 @@ class SinglePayment extends BaseEntity {
     protected $IsReconciled;
     protected $Status;
     protected $PaymentType;
+    
     public function getXmlName()
     {
         return 'Payment';
