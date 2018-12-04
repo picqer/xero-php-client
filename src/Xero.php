@@ -55,7 +55,7 @@ class Xero {
     public function getAccount($accountId)
     {
         $response = $this->requestGet('/accounts/'.$accountId);
-        return Entities\BaseEntity::makeCollectionFromResponse('Account', $response['Accounts'][0]);
+        return Entities\BaseEntity::makeFromResponse('Account', $response['Accounts'][0]);
     }
 
     public function getInvoice($invoiceId)
