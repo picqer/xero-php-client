@@ -34,3 +34,4 @@ class Payment extends BaseEntity {
             'CreditNote' => 'CreditNote'
         ];
     }
+}
