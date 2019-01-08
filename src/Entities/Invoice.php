@@ -20,7 +20,6 @@ class Invoice extends BaseEntity {
     protected $TotalTax;
     protected $Total;
     protected $TotalDiscount;
-    protected $DiscountRate;
     protected $CurrencyCode;
     protected $LineAmountTypes;
     protected $AmountPaid;
