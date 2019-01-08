@@ -9,7 +9,6 @@ class InvoiceLineItem extends BaseEntity {
     protected $TaxType;
     protected $TaxAmount;
     protected $LineAmount;
-    protected $LineAmountTypes;
     protected $AccountCode;
     protected $Quantity;
     protected $ItemCode;
