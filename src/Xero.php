@@ -134,6 +134,15 @@ class Xero {
             'headers' => ['Accept' => $accept]
         ];
 
+        // Workaround for Guzzle BC (https://github.com/picqer/xero-php-client/pull/3)
+        if (is_array($data) && isset($data['query'])) {
+            $options['query'] = $data['query'];
+            unset($data['query']);
+            if (count($data) == 0) {
+                $data = null;
+            }
+        }
+
         if ( ! is_null($data))
         {
             $options['body'] = $data;
