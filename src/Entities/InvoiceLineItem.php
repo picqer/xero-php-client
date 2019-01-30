@@ -12,6 +12,7 @@ class InvoiceLineItem extends BaseEntity {
     protected $AccountCode;
     protected $Quantity;
     protected $ItemCode;
+    protected $DiscountRate;
 
     public function getXmlName()
     {
