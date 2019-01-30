@@ -1,6 +1,8 @@
 # xero-php-client
 PHP Client library for the Xero oAuth API, only for private applications
 
+**This package is not maintained anymore, we recommend this excellent alternative: https://packagist.org/packages/calcinai/xero-php**
+
 ## Composer install
 Installing this Xero API client for PHP can be done through Composer.
 
